@@ -163,7 +163,13 @@ class MaximaProcess {
 				} catch (Exception ee) {
 
 				}
-			if (output.currentValue().contains(config.killString)) {
+			if (
+				output.currentValue().contains(config.killString) ||
+				counterString(output.currentValue(),config.useReady) >= 2 ||
+				output.currentValue().contains("incorrect syntax") ||
+				output.currentValue().contains("positive, negative or zero") ||
+				output.currentValue().contains("concat(--COMPLETED--k, ill--PROCESS--)")
+				) {
 				output.close();
 				kill();
 				return true;
@@ -193,6 +199,21 @@ class MaximaProcess {
 		output.close();
 		deactivate();
 		return true;
+	}
+
+
+	/**
+	 * Helper method. Checks if test occurs twice in string
+	 * @param test string to look for in the output.
+	 */
+	private int counterString(String s,String search) {
+	    int times = 0;
+	    int index = s.indexOf(search,0);
+	    while(index != -1) {
+	        index = s.indexOf(search,index+1);
+	        ++times;
+	    }
+	    return times;
 	}
 
 	/**
