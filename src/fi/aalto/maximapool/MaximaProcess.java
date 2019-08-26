@@ -295,7 +295,7 @@ class MaximaProcess {
 		try {
 			process.exitValue();
 		} catch (Exception e) {
-			process.destroy();
+			process.destroyForcibly();
 		}
 	}
 
